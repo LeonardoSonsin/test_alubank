@@ -1,9 +1,9 @@
-import 'package:estilizacao_componentes/data/bank_http.dart';
 import 'package:estilizacao_componentes/data/bank_inherited.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatefulWidget {
-  const Header({Key? key}) : super(key: key);
+  const Header({Key? key, required this.api}) : super(key: key);
+  final Future<String> api;
 
   @override
   State<Header> createState() => _HeaderState();
@@ -59,15 +59,13 @@ class _HeaderState extends State<Header> {
                     ],
                   ),
                   FutureBuilder(
-                      future: BankHttp().dolarToReal(),
+                      future: widget.api,
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
-                            return CircularProgressIndicator();
-                            break;
+                            return const CircularProgressIndicator();
                           case ConnectionState.waiting:
-                            return CircularProgressIndicator();
-                            break;
+                            return const CircularProgressIndicator();
                           case ConnectionState.active:
                             // TODO: Handle this case.
                             break;
@@ -90,9 +88,8 @@ class _HeaderState extends State<Header> {
                                 const Text('Dolar to Real'),
                               ],
                             );
-                            break;
                         }
-                        return Text('Erro na API');
+                        return const Text('Erro na API');
                       }),
                 ],
               ),
